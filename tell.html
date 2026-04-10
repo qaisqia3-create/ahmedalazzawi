@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>NEXUS FIT | onboarding pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0a0a, #010101);
+            font-family: 'Tajawal', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #eef2ff;
+            padding: 1rem;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            max-width: 680px;
+            margin: 1rem auto 2.5rem auto;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(220, 38, 38, 0.2);
+            overflow: hidden;
+            padding: 1.5rem 1.2rem 2rem;
+            transition: all 0.2s;
+        }
+
+        .progress-area {
+            margin-bottom: 1.8rem;
+        }
+        .step-counter {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+        .progress-bar-bg {
+            background-color: #2a2a2f;
+            border-radius: 40px;
+            height: 8px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #e11d48, #dc2626);
+            width: 0%;
+            height: 100%;
+            border-radius: 40px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 6px #ef4444;
+        }
+
+        .motivation-chip {
+            background: rgba(220, 38, 38, 0.12);
+            border-right: 4px solid #dc2626;
+            padding: 0.7rem 1rem;
+            border-radius: 1.2rem;
+            margin: 1.2rem 0 1.5rem 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #facc15;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .motivation-chip span:first-child {
+            font-size: 1.4rem;
+        }
+
+        .steps-wrapper {
+            position: relative;
+        }
+        .step {
+            display: none;
+            animation: fadeSlide 0.25s ease-out;
+        }
+        .step.active-step {
+            display: block;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateX(12px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+
+        .input-group {
+            margin-bottom: 1.3rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+            color: #ddd;
+        }
+        label .req {
+            color: #f87171;
+            margin-right: 4px;
+        }
+        input, select, textarea {
+            width: 100%;
+            background: #121217;
+            border: 1px solid #2c2c34;
+            padding: 0.85rem 1rem;
+            border-radius: 1.2rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: #f0f0f0;
+            transition: all 0.2s;
+            outline: none;
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.3);
+            background: #18181f;
+        }
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .radio-group label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: normal;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+        .radio-group input {
+            width: 18px;
+            height: 18px;
+            accent-color: #dc2626;
+        }
+        .inline-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .inline-row .input-group {
+            flex: 1;
+        }
+        hr {
+            margin: 1rem 0;
+            border-color: #2c2c34;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 75px;
+        }
+        .measure-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .measure-row .input-group {
+            flex: 1;
+        }
+        .info-note {
+            background: #1e1e2a;
+            border-radius: 1rem;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            font-size: 0.75rem;
+            color: #facc15;
+            text-align: center;
+        }
+        .warning-note {
+            background: rgba(220, 38, 38, 0.25);
+            border-right: 4px solid #dc2626;
+            border-radius: 1rem;
+            padding: 0.7rem;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            color: #ffbbbb;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+        button {
+            background: #1f1f2b;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.2s;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #b91c1c, #dc2626);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(95deg, #991b1b, #b91c1c);
+            transform: scale(0.98);
+        }
+        .btn-secondary {
+            background: #2a2a33;
+            border: 1px solid #3f3f4a;
+        }
+        .btn-secondary:hover {
+            background: #3a3a44;
+        }
+        .error-msg {
+            color: #f87171;
+            font-size: 0.75rem;
+            margin-top: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .final-send {
+            width: 100%;
+            justify-content: center;
+            font-size: 1.1rem;
+            padding: 1rem;
+        }
+        .small-note {
+            font-size: 0.7rem;
+            color: #999;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        @media (max-width: 550px) {
+            .form-container {
+                padding: 1rem;
+            }
+            .inline-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            button {
+                padding: 0.7rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <div class="progress-area">
+        <div class="step-counter">
+            <span>📋 الخطوة <span id="currentStepNum">1</span> / <span id="totalSteps">9</span></span>
+            <span id="stepNameDisplay">المعلومات الشخصية</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <div class="motivation-chip" id="motivationMsg">
+        <span>🔥</span>
+        <span id="dynamicMotivation">الخطوة الأولى نحو أقوى نسخة منك 👑</span>
+    </div>
+
+    <div class="steps-wrapper" id="stepsWrapper">
+        <!-- STEP 1: المعلومات الشخصية -->
+        <div class="step" data-step="1">
+            <h3 style="margin-bottom: 1rem;">👤 بياناتك الأساسية</h3>
+            <div class="input-group"><label>الاسم الكامل <span class="req">*</span></label><input type="text" id="fullName" placeholder="مثال: أحمد خالد"></div>
+            <div class="inline-row">
+                <div class="input-group"><label>العمر <span class="req">*</span></label><input type="number" id="age" placeholder="بالسنوات"></div>
+                <div class="input-group"><label>الطول (سم) <span class="req">*</span></label><input type="number" id="height" placeholder="سم"></div>
+                <div class="input-group"><label>الوزن (كجم) <span class="req">*</span></label><input type="number" id="weight" placeholder="كجم"></div>
+            </div>
+            <div class="inline-row">
+                <div class="input-group"><label>الجنس <span class="req">*</span></label><select id="gender"><option value="">اختر</option><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select></div>
+                <div class="input-group"><label>رقم الهاتف <span class="req">*</span></label><input type="tel" id="phone" placeholder="+9665xxxxxxxx"></div>
+            </div>
+        </div>
+
+        <!-- STEP 2: الهدف -->
+        <div class="step" data-step="2">
+            <h3>🎯 تحديد الهدف الرياضي</h3>
+            <div class="input-group"><label>الهدف الرئيسي <span class="req">*</span></label><select id="mainGoal"><option value="">اختر</option><option value="تضخيم (ضخامة عضلية)">تضخيم 💪</option><option value="تنشيف (حرق دهون)">تنشيف 🔥</option><option value="لياقة عامة">لياقة عامة 🧘</option></select></div>
+            <div class="input-group"><label>الهدف بالتفصيل <span class="req">*</span></label><textarea id="goalDetails" rows="2" placeholder="مثال: أريد زيادة الكتلة العضلية 10 كجم خلال 6 أشهر"></textarea></div>
+            <div class="input-group"><label>المدة الزمنية المستهدفة <span class="req">*</span></label><input type="text" id="duration" placeholder="مثال: 3 أشهر / 12 أسبوع"></div>
+        </div>
+
+        <!-- STEP 3: التاريخ الرياضي -->
+        <div class="step" data-step="3">
+            <h3>🏋️ التاريخ الرياضي</h3>
+            <div class="input-group"><label>هل سبق لك التمرين؟ <span class="req">*</span></label><div class="radio-group"><label><input type="radio" name="prevExp" value="نعم"> نعم</label><label><input type="radio" name="prevExp" value="لا"> لا</label></div></div>
+            <div id="expFields" style="transition:0.2s">
+                <div class="input-group"><label>سنوات الخبرة</label><input type="text" id="expYears" placeholder="مثال: سنتان"></div>
+                <div class="input-group"><label>نوع التمارين السابقة</label><input type="text" id="exerciseType" placeholder="مثلاً: حديد / كارديو / كالستنيكس"></div>
+            </div>
+        </div>
+
+        <!-- STEP 4: الحالة الصحية -->
+        <div class="step" data-step="4">
+            <h3>❤️ الحالة الصحية</h3>
+            <div class="input-group"><label>إصابات حالية أو سابقة</label><textarea id="injuries" rows="2" placeholder="مثلاً: التواء كاحل، تمزق في الكتف"></textarea></div>
+            <div class="input-group"><label>أمراض مزمنة (ضغط، سكري، غدة..)</label><textarea id="illnesses" rows="2" placeholder="اذكر إن وُجدت"></textarea></div>
+            <div class="input-group"><label>أدوية منتظمة</label><textarea id="medications" rows="2" placeholder="اسم الدواء والجرعة"></textarea></div>
+        </div>
+
+        <!-- STEP 5: نمط الحياة -->
+        <div class="step" data-step="5">
+            <h3>🛌 نمط الحياة</h3>
+            <div class="input-group"><label>عدد ساعات النوم (المتوسط)</label><input type="text" id="sleep" placeholder="مثال: 6-7 ساعات"></div>
+            <div class="input-group"><label>النشاط اليومي (غير رياضي)</label><select id="dailyActivity"><option value="">اختر</option><option value="خامل (جلوس طويل)">خامل (جلوس طويل)</option><option value="نشاط خفيف (مشي قليل)">نشاط خفيف</option><option value="نشاط متوسط (حركة دائمة)">نشاط متوسط</option><option value="نشاط عالي (وظيفة حركية)">نشاط عالي</option></select></div>
+            <div class="input-group"><label>نوع العمل</label><input type="text" id="workType" placeholder="مكتبي / يدوي / ميداني"></div>
+        </div>
+
+        <!-- STEP 6: التغذية -->
+        <div class="step" data-step="6">
+            <h3>🍽️ التغذية والمكملات</h3>
+            <div class="input-group"><label>عدد الوجبات الرئيسية يومياً</label><input type="text" id="meals" placeholder="مثال: 3-4 وجبات"></div>
+            <div class="input-group"><label>النظام الغذائي الحالي</label><input type="text" id="diet" placeholder="مثلاً: عادي / صحي / كيتو / نباتي"></div>
+            <div class="input-group"><label>المكملات الغذائية (إن وُجدت)</label><input type="text" id="supplements" placeholder="مثال: بروتين، كرياتين، فيتامينات"></div>
+        </div>
+
+        <!-- STEP 7: الالتزام -->
+        <div class="step" data-step="7">
+            <h3>⏱️ الالتزام والجدول</h3>
+            <div class="input-group"><label>عدد أيام التمرين في الأسبوع</label><select id="daysPerWeek"><option value="">اختر</option><option value="يوم واحد">يوم واحد</option><option value="يومين">يومين</option><option value="3 أيام">3 أيام</option><option value="4 أيام">4 أيام</option><option value="5 أيام">5 أيام</option><option value="6 أيام">6 أيام</option></select></div>
+            <div class="input-group"><label>الوقت المفضل للتمرين</label><input type="text" id="trainingTime" placeholder="مثال: الصباح الباكر / المساء بعد المغرب"></div>
+        </div>
+
+        <!-- STEP 8: قياسات الجسم / تنبيه الصور (بدون حقول رفع) -->
+        <div class="step" data-step="8">
+            <h3 id="bodyMeasureTitle">📏 قياسات الجسم / صور المرجعية</h3>
+            <div id="bodyMeasureDynamic">
+                <!-- سيتم ملؤها حسب الجنس: للنساء حقول قياسات، للرجال تنبيه فقط -->
+            </div>
+            <div id="mandatoryNote" class="warning-note">⚠️ تنبيه مهم جداً: بعد الضغط على زر الإرسال، ستنتقل إلى واتساب. يجب عليك فوراً إرسال الصور المطلوبة (صدر، ظهر، أرجل) إلى المدرب على الرقم نفسه، لأن هذه البيانات ضرورية لبدء برنامجك. لن يتم قبول أي طلب بدونها.</div>
+        </div>
+
+        <!-- STEP 9: الأسئلة التحفيزية + الإرسال -->
+        <div class="step" data-step="9">
+            <h3>💥 الدافع الحقيقي</h3>
+            <div class="input-group"><label>لماذا تريد الوصول لهذا الهدف؟ <span class="req">*</span></label><textarea id="whyGoal" rows="3" placeholder="اكتب سببك القوي ..."></textarea></div>
+            <div class="input-group"><label>أكبر تحدٍ يواجهك حالياً</label><textarea id="challenge" rows="2" placeholder="مثلاً: الالتزام، الوقت، الشهية، الإصابات السابقة"></textarea></div>
+            <button class="btn-primary final-send" id="sendWhatsAppBtn">🚀 أرسل البيانات إلى المدرب 🚀</button>
+            <div class="small-note">بعد الضغط، سيتم فتح محادثة واتساب تحتوي على بياناتك النصية، يرجى إرسال الصور/القياسات المطلوبة في نفس المحادثة</div>
+        </div>
+    </div>
+
+    <div class="buttons" id="navButtons">
+        <button class="btn-secondary" id="prevBtn" style="visibility: hidden;">◀ السابق</button>
+        <button class="btn-primary" id="nextBtn">التالي ▶</button>
+    </div>
+</div>
+
+<script>
+    // ----------------------- CONFIGURATION ------------------------
+    const COACH_PHONE = "+9647703487234";   // رقم واتساب المدرب
+    
+    // ----------------------- DOM Elements -------------------------
+    let currentStep = 1;
+    const totalSteps = 9;
+    const stepElements = document.querySelectorAll('.step');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const progressFill = document.getElementById('progressFill');
+    const currentStepNumSpan = document.getElementById('currentStepNum');
+    const stepNameDisplay = document.getElementById('stepNameDisplay');
+    const dynamicMotivationSpan = document.getElementById('dynamicMotivation');
+    const genderSelect = document.getElementById('gender');
+    const bodyMeasureDynamic = document.getElementById('bodyMeasureDynamic');
+    
+    // motivational messages
+    const motivationMessages = {
+        1: "🔥 الاستعداد الحقيقي يبدأ بمعرفة نفسك. لنبدأ ببياناتك!",
+        2: "🎯 الهدف الواضح = نتيجة مضمونة. حدد هدفك بدقة.",
+        3: "💪 كل بطل له قصة، أخبرنا عن تاريخك الرياضي.",
+        4: "❤️ صحتك هي أولويتنا، كن صادقاً مع حالتك الصحية.",
+        5: "🛌 العادات اليومية تصنع الفارق! نمط حياتك مهم جداً.",
+        6: "🍗 الغذاء أساس النجاح. أخبرنا عن تغذيتك الحالية.",
+        7: "⏳ الالتزام هو مفتاح التحول، حدد جدولك الأنسب.",
+        8: "📸 تأكد من إرسال الصور المطلوبة عبر واتساب فوراً.",
+        9: "🧠 العقلية هي السلاح السري. شاركنا دوافعك الحقيقية!"
+    };
+    
+    const stepNames = {
+        1: "المعلومات الشخصية",
+        2: "الهدف الرياضي",
+        3: "التاريخ الرياضي",
+        4: "الحالة الصحية",
+        5: "نمط الحياة",
+        6: "التغذية",
+        7: "الالتزام",
+        8: "قياسات الجسم",
+        9: "الدافع والإرسال"
+    };
+    
+    function updateProgressAndUI() {
+        const percent = ((currentStep) / totalSteps) * 100;
+        progressFill.style.width = `${percent}%`;
+        currentStepNumSpan.innerText = currentStep;
+        stepNameDisplay.innerText = stepNames[currentStep];
+        dynamicMotivationSpan.innerText = motivationMessages[currentStep] || "استمر أنت قريب من هدفك 💥";
+        stepElements.forEach((step, idx) => {
+            if (idx + 1 === currentStep) step.classList.add('active-step');
+            else step.classList.remove('active-step');
+        });
+        prevBtn.style.visibility = currentStep === 1 ? "hidden" : "visible";
+        if (currentStep === totalSteps) {
+            nextBtn.style.display = "none";
+            prevBtn.style.marginLeft = "auto";
+            prevBtn.style.marginRight = "auto";
+        } else {
+            nextBtn.style.display = "inline-flex";
+            prevBtn.style.marginLeft = "0";
+            prevBtn.style.marginRight = "0";
+        }
+        if (currentStep === 8) {
+            updateBodyMeasureFields();
+        }
+    }
+    
+    // دالة إنشاء حقول القياسات حسب الجنس (للنساء فقط، والرجال مجرد تنبيه)
+    function updateBodyMeasureFields() {
+        const gender = document.getElementById('gender').value;
+        const title = document.getElementById('bodyMeasureTitle');
+        const mandatoryNoteDiv = document.getElementById('mandatoryNote');
+        if (!gender) {
+            bodyMeasureDynamic.innerHTML = `<div class="error-msg">⚠️ الرجاء اختيار الجنس أولاً في الخطوة 1</div>`;
+            if(title) title.innerText = "📏 قياسات الجسم (غير محدد)";
+            if(mandatoryNoteDiv) mandatoryNoteDiv.style.display = "block";
+            return;
+        }
+        if (gender === 'ذكر') {
+            if(title) title.innerText = "📸 تنبيه: الصور المرجعية للذكر";
+            if(mandatoryNoteDiv) mandatoryNoteDiv.innerHTML = "⚠️ تنبيه مهم جداً: بعد الضغط على زر الإرسال، ستنتقل إلى واتساب. يجب عليك فوراً إرسال صور الصدر والظهر والأرجل إلى المدرب على الرقم نفسه، لأن هذه البيانات ضرورية لبدء برنامجك. لن يتم قبول أي طلب بدونها.";
+            bodyMeasureDynamic.innerHTML = `
+                <div class="info-note">📌 لا تحتاج لرفع صور هنا. فقط تأكد من إرسال الصور المطلوبة (صدر، ظهر، أرجل) مباشرة عبر محادثة واتساب بعد الضغط على زر الإرسال.</div>
+            `;
+        } 
+        else if (gender === 'أنثى') {
+            if(title) title.innerText = "📏 قياسات الجسم (للأنثى) - ضرورية جداً";
+            if(mandatoryNoteDiv) mandatoryNoteDiv.innerHTML = "⚠️ تنبيه مهم جداً: بعد الضغط على زر الإرسال، ستنتقل إلى واتساب. يجب عليك فوراً إرسال القياسات المطلوبة (صدر، خصر، أرداف) إلى المدرب على الرقم نفسه، لأن هذه البيانات ضرورية لبدء برنامجك. لن يتم قبول أي طلب بدونها.";
+            bodyMeasureDynamic.innerHTML = `
+                <div class="measure-row"><div class="input-group"><label>محيط الصدر (سم) <span class="req">*</span></label><input type="text" id="chestMeasure" placeholder="مثال: 90"></div></div>
+                <div class="measure-row"><div class="input-group"><label>محيط الخصر (سم) <span class="req">*</span></label><input type="text" id="waistMeasure" placeholder="مثال: 70"></div></div>
+                <div class="measure-row"><div class="input-group"><label>محيط الأرداف (سم) <span class="req">*</span></label><input type="text" id="hipsMeasure" placeholder="مثال: 95"></div></div>
+                <div class="measure-row"><div class="input-group"><label>محيط الفخذ (سم)</label><input type="text" id="thighMeasure" placeholder="اختياري"></div></div>
+                <div class="measure-row"><div class="input-group"><label>محيط الذراع (سم)</label><input type="text" id="armMeasure" placeholder="اختياري"></div></div>
+            `;
+        }
+    }
+    
+    genderSelect.addEventListener('change', () => {
+        if (currentStep === 8) updateBodyMeasureFields();
+    });
+    
+    // دالة للتحقق من صحة الخطوة 8 (للنساء فقط، والرجال لا يوجد تحقق)
+    function validateStep8() {
+        const gender = document.getElementById('gender').value;
+        if (!gender) return true;
+        if (gender === 'أنثى') {
+            const chestMeasure = document.getElementById('chestMeasure')?.value.trim();
+            const waistMeasure = document.getElementById('waistMeasure')?.value.trim();
+            const hipsMeasure = document.getElementById('hipsMeasure')?.value.trim();
+            if (!chestMeasure) { showFieldError('chestMeasure', 'محيط الصدر مطلوب'); return false; }
+            if (!waistMeasure) { showFieldError('waistMeasure', 'محيط الخصر مطلوب'); return false; }
+            if (!hipsMeasure) { showFieldError('hipsMeasure', 'محيط الأرداف مطلوب'); return false; }
+            return true;
+        }
+        return true; // الرجال ليس لديهم حقول إلزامية هنا
+    }
+    
+    // دالة لجمع نص القياسات للرسالة (للنساء فقط، والرجال تنبيه)
+    function getBodyMeasurementsText() {
+        const gender = document.getElementById('gender').value;
+        if (gender === 'ذكر') {
+            return `📸 الصور المرجعية (للذكر):\n⚠️ يرجى إرسال صور الصدر والظهر والأرجل إلى المدرب عبر هذه المحادثة فوراً، فهي إلزامية لبدء التقييم.`;
+        } else if (gender === 'أنثى') {
+            let chest = document.getElementById('chestMeasure')?.value.trim() || 'غير مدخل';
+            let waist = document.getElementById('waistMeasure')?.value.trim() || 'غير مدخل';
+            let hips = document.getElementById('hipsMeasure')?.value.trim() || 'غير مدخل';
+            let thigh = document.getElementById('thighMeasure')?.value.trim() || 'غير مدخل';
+            let arm = document.getElementById('armMeasure')?.value.trim() || 'غير مدخل';
+            return `📏 القياسات (للأنثى):\n- محيط الصدر: ${chest} سم\n- محيط الخصر: ${waist} سم\n- محيط الأرداف: ${hips} سم\n- محيط الفخذ: ${thigh} سم\n- محيط الذراع: ${arm} سم`;
+        }
+        return "لم يتم تحديد الجنس بعد";
+    }
+    
+    // ----------------------- دوال التحقق العامة -------------------------
+    function validateCurrentStep() {
+        let isValid = true;
+        document.querySelectorAll('.error-msg').forEach(el => el.remove());
+        
+        if (currentStep === 1) {
+            const name = document.getElementById('fullName').value.trim();
+            const age = document.getElementById('age').value.trim();
+            const height = document.getElementById('height').value.trim();
+            const weight = document.getElementById('weight').value.trim();
+            const gender = document.getElementById('gender').value;
+            const phone = document.getElementById('phone').value.trim();
+            if (!name) showFieldError('fullName', 'الاسم مطلوب');
+            else if (!age) showFieldError('age', 'العمر مطلوب');
+            else if (!height) showFieldError('height', 'الطول مطلوب');
+            else if (!weight) showFieldError('weight', 'الوزن مطلوب');
+            else if (!gender) showFieldError('gender', 'اختر الجنس');
+            else if (!phone) showFieldError('phone', 'رقم الهاتف مطلوب');
+            else isValid = true;
+            if (!name || !age || !height || !weight || !gender || !phone) isValid = false;
+        }
+        else if (currentStep === 2) {
+            const mainGoal = document.getElementById('mainGoal').value;
+            const goalDetails = document.getElementById('goalDetails').value.trim();
+            const duration = document.getElementById('duration').value.trim();
+            if (!mainGoal) showFieldError('mainGoal', 'اختر الهدف الرئيسي');
+            else if (!goalDetails) showFieldError('goalDetails', 'أدخل تفاصيل الهدف');
+            else if (!duration) showFieldError('duration', 'المدة الزمنية مطلوبة');
+            else isValid = true;
+            if (!mainGoal || !goalDetails || !duration) isValid = false;
+        }
+        else if (currentStep === 3) {
+            const prevExpRadios = document.querySelectorAll('input[name="prevExp"]');
+            let expSelected = false;
+            for (let r of prevExpRadios) if (r.checked) expSelected = true;
+            if (!expSelected) {
+                showFieldError('expFields', 'اختر إذا كنت تمارس الرياضة سابقاً');
+                isValid = false;
+            } else isValid = true;
+        }
+        else if (currentStep === 8) {
+            isValid = validateStep8();
+        }
+        else if (currentStep === 9) {
+            const whyGoal = document.getElementById('whyGoal').value.trim();
+            if (!whyGoal) {
+                showFieldError('whyGoal', 'الدافع هو محور رحلتك، الرجاء كتابته');
+                isValid = false;
+            } else isValid = true;
+        }
+        else {
+            isValid = true;
+        }
+        return isValid;
+    }
+    
+    function showFieldError(fieldIdOrQuery, message) {
+        let element = document.getElementById(fieldIdOrQuery);
+        if (!element && fieldIdOrQuery === 'expFields') element = document.getElementById('expFields');
+        if (element) {
+            const errDiv = document.createElement('div');
+            errDiv.className = 'error-msg';
+            errDiv.innerHTML = `⚠️ ${message}`;
+            element.parentNode.insertBefore(errDiv, element.nextSibling);
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            alert(message);
+        }
+    }
+    
+    function nextStep() {
+        if (validateCurrentStep()) {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateProgressAndUI();
+            }
+        }
+    }
+    
+    function prevStep() {
+        if (currentStep > 1) {
+            currentStep--;
+            updateProgressAndUI();
+        }
+    }
+    
+    function handleExpVisibility() {
+        const selectedRadio = document.querySelector('input[name="prevExp"]:checked');
+        const expFieldsDiv = document.getElementById('expFields');
+        if (selectedRadio && selectedRadio.value === 'لا') {
+            expFieldsDiv.style.opacity = '0.5';
+            document.getElementById('expYears').placeholder = "لا توجد خبرة سابقة";
+            document.getElementById('exerciseType').placeholder = "لا يوجد";
+        } else if (selectedRadio && selectedRadio.value === 'نعم') {
+            expFieldsDiv.style.opacity = '1';
+            document.getElementById('expYears').placeholder = "مثال: سنتان";
+            document.getElementById('exerciseType').placeholder = "مثلاً: حديد / كارديو";
+        }
+    }
+    
+    function bindSportsRadio() {
+        const radios = document.querySelectorAll('input[name="prevExp"]');
+        radios.forEach(radio => radio.addEventListener('change', handleExpVisibility));
+        handleExpVisibility();
+    }
+    
+    // بناء رسالة الواتساب التفصيلية مع إضافة رموز تعبيرية
+    function buildWhatsAppMessage() {
+        const fullName = document.getElementById('fullName').value.trim() || "غير مدخل";
+        const age = document.getElementById('age').value.trim() || "?";
+        const height = document.getElementById('height').value.trim() || "?";
+        const weight = document.getElementById('weight').value.trim() || "?";
+        const gender = document.getElementById('gender').value || "?";
+        const phone = document.getElementById('phone').value.trim() || "?";
+        
+        const mainGoalSelect = document.getElementById('mainGoal').value;
+        const goalDetailsText = document.getElementById('goalDetails').value.trim() || "غير محدد";
+        const duration = document.getElementById('duration').value.trim() || "غير محدد";
+        const goalCombined = mainGoalSelect ? `${mainGoalSelect} - ${goalDetailsText}` : `الهدف: ${goalDetailsText}`;
+        
+        let prevExpValue = "لا";
+        const checkedRadio = document.querySelector('input[name="prevExp"]:checked');
+        if (checkedRadio) prevExpValue = checkedRadio.value;
+        let expYearsVal = document.getElementById('expYears').value.trim();
+        let exerciseTypeVal = document.getElementById('exerciseType').value.trim();
+        if (prevExpValue === "لا") {
+            expYearsVal = "لا توجد خبرة";
+            exerciseTypeVal = "لا يوجد";
+        } else {
+            if (expYearsVal === "") expYearsVal = "غير مدخل";
+            if (exerciseTypeVal === "") exerciseTypeVal = "غير مدخل";
+        }
+        const experienceStr = `${prevExpValue === "نعم" ? "سبق التمرين" : "بدون خبرة سابقة"} | سنوات: ${expYearsVal} | نوع: ${exerciseTypeVal}`;
+        
+        const injuries = document.getElementById('injuries').value.trim() || "لا يوجد";
+        const illnesses = document.getElementById('illnesses').value.trim() || "لا يوجد";
+        const medications = document.getElementById('medications').value.trim() || "لا يوجد";
+        const healthStr = `إصابات: ${injuries}\nأمراض مزمنة: ${illnesses}\nأدوية: ${medications}`;
+        
+        const meals = document.getElementById('meals').value.trim() || "غير محدد";
+        const diet = document.getElementById('diet').value.trim() || "غير محدد";
+        const supplements = document.getElementById('supplements').value.trim() || "لا يوجد";
+        const nutritionStr = `الوجبات: ${meals}\nالنظام الغذائي: ${diet}\nالمكملات: ${supplements}`;
+        
+        const sleep = document.getElementById('sleep').value.trim() || "غير محدد";
+        const dailyActivity = document.getElementById('dailyActivity').value || "غير محدد";
+        const workType = document.getElementById('workType').value.trim() || "غير محدد";
+        const lifestyleStr = `ساعات النوم: ${sleep}\nالنشاط اليومي: ${dailyActivity}\nنوع العمل: ${workType}`;
+        
+        const daysPerWeek = document.getElementById('daysPerWeek').value || "غير محدد";
+        const trainingTime = document.getElementById('trainingTime').value.trim() || "غير محدد";
+        const commitmentStr = `أيام التمرين أسبوعياً: ${daysPerWeek}\nالوقت المفضل: ${trainingTime}`;
+        
+        const whyGoal = document.getElementById('whyGoal').value.trim() || "لم يحدد";
+        const challenge = document.getElementById('challenge').value.trim() || "لم يحدد";
+        
+        const bodyMeasureText = getBodyMeasurementsText();
+        
+        // رسالة منسقة مع رموز تعبيرية
+       let finalMsg = `🔥 *متدرب جديد - بيانات التفاصيل الكاملة* 🔥
+
+👤 *البيانات الشخصية*
+✅ الاسم: ${fullName}
+✅ العمر: ${age} سنة
+✅ الطول: ${height} سم
+✅ الوزن: ${weight} كجم
+✅ الجنس: ${gender}
+✅ رقم الهاتف: ${phone}
+
+🎯 *الهدف الرياضي*
+✅ الهدف: ${goalCombined}
+✅ المدة الزمنية: ${duration}
+
+🏋️ *التاريخ الرياضي*
+${experienceStr}
+
+❤️ *الحالة الصحية*
+${healthStr}
+
+🍽️ *التغذية*
+${nutritionStr}
+
+🛌 *نمط الحياة*
+${lifestyleStr}
+
+⏱️ *الالتزام*
+${commitmentStr}
+
+📸 *القياسات / الصور المرجعية*
+${bodyMeasureText}
+
+💥 *الدافع والتحديات*
+✅ السبب الحقيقي: ${whyGoal}
+✅ أكبر تحدٍ: ${challenge}
+
+---
+⚠️ *ملاحظة هامة جداً* ⚠️
+✅ بالنسبة للرجال: يجب إرسال صور الصدر والظهر والأرجل إلى هذا الرقم فوراً.
+✅ بالنسبة للنساء: يجب إرسال القياسات المذكورة أعلاه.
+❌ لن يتم البدء بالبرنامج بدون هذه البيانات.`;
+        
+        return finalMsg;
+    }
+    
+    function sendToWhatsApp() {
+        // التحقق من صحة جميع الخطوات الأساسية
+        if (!validateCurrentStep()) return;
+        
+        // التحقق من اكتمال البيانات الأساسية
+        const requiredChecks = [
+            { id: 'fullName', msg: 'الاسم الكامل' }, { id: 'age', msg: 'العمر' },
+            { id: 'height', msg: 'الطول' }, { id: 'weight', msg: 'الوزن' },
+            { id: 'gender', msg: 'الجنس' }, { id: 'phone', msg: 'رقم الهاتف' },
+            { id: 'mainGoal', msg: 'الهدف الرئيسي' }, { id: 'goalDetails', msg: 'تفاصيل الهدف' },
+            { id: 'duration', msg: 'المدة الزمنية' }
+        ];
+        let missing = [];
+        for (let req of requiredChecks) {
+            const el = document.getElementById(req.id);
+            if (!el || !el.value.trim()) missing.push(req.msg);
+        }
+        const whyGoalEl = document.getElementById('whyGoal');
+        if (!whyGoalEl.value.trim()) missing.push('الدافع (لماذا الهدف)');
+        
+        const gender = document.getElementById('gender').value;
+        if (gender === 'أنثى') {
+            if (!document.getElementById('chestMeasure')?.value.trim()) missing.push('محيط الصدر');
+            if (!document.getElementById('waistMeasure')?.value.trim()) missing.push('محيط الخصر');
+            if (!document.getElementById('hipsMeasure')?.value.trim()) missing.push('محيط الأرداف');
+        }
+        // الرجال ليس لديهم حقول إلزامية
+        
+        if (missing.length > 0) {
+            alert(`⚠️ الرجاء إكمال المعلومات التالية قبل الإرسال:\n${missing.join('\n')}\n\nاذهب للخطوات المطلوبة.`);
+            if (missing.includes('الاسم الكامل') || missing.includes('العمر') || missing.includes('الطول') || missing.includes('الوزن') || missing.includes('الجنس') || missing.includes('رقم الهاتف')) {
+                currentStep = 1; updateProgressAndUI();
+            } else if (missing.includes('الهدف الرئيسي') || missing.includes('تفاصيل الهدف') || missing.includes('المدة الزمنية')) {
+                currentStep = 2; updateProgressAndUI();
+            } else if (missing.includes('الدافع (لماذا الهدف)')) {
+                currentStep = 9; updateProgressAndUI();
+            } else if (missing.includes('محيط')) {
+                currentStep = 8; updateProgressAndUI();
+            }
+            return;
+        }
+        
+        const messageText = buildWhatsAppMessage();
+        const encodedText = encodeURIComponent(messageText);
+        const whatsappURL = `https://wa.me/${COACH_PHONE}?text=${encodedText}`;
+        window.open(whatsappURL, '_blank');
+    }
+    
+    // ----------------------- ربط الأحداث والتهيئة -----------------
+    function bindEvents() {
+        nextBtn.addEventListener('click', nextStep);
+        prevBtn.addEventListener('click', prevStep);
+        const sendBtn = document.getElementById('sendWhatsAppBtn');
+        if (sendBtn) sendBtn.addEventListener('click', sendToWhatsApp);
+        bindSportsRadio();
+        document.querySelectorAll('input[name="prevExp"]').forEach(r => r.addEventListener('change', handleExpVisibility));
+        genderSelect.addEventListener('change', () => { if (currentStep === 8) updateBodyMeasureFields(); });
+    }
+    
+    updateProgressAndUI();
+    bindEvents();
+    handleExpVisibility();
+    if (genderSelect.value) updateBodyMeasureFields();
+</script>
+</body>
+</html>
